@@ -122,8 +122,16 @@ for the manifest and delivery flow.
 
 The chart's `invites` values remain for existing ACM installations. A Helm hook
 creates each token Secret, and the optional ACM Policy delivers it with the CA
-bundle and SWIM key. Removing an entry does not revoke its token. This workflow
-requires `enrollment.authz=kube`. Use SiteInvite for new GitOps-managed invites.
+bundle and SWIM key. This workflow requires `enrollment.authz=kube`. An entry
+with `allowDeletedName` also needs the invite ServiceAccount bound to the
+`enrollment-admin` Role. Use SiteInvite for new GitOps-managed invites.
+
+Removing an entry, or deleting its Secret, does not revoke its token. Revoke it
+with `DELETE /v1alpha1/enrollmenttokens/<id>`, taking the id from the Secret's
+`grid.praxis.fast/token-id` annotation. To re-mint after an expired or revoked
+token, delete `grid-invite-<siteName>` on the hub, run `helm upgrade` with the
+site still in `invites`, and deliver the new token. The hook skips sites whose
+Secret already exists, so an upgrade mints only where the Secret is gone.
 
 ## Hub site identity
 

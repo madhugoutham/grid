@@ -106,14 +106,20 @@ kubectl get siteinvite east2 -o jsonpath='{.status.secretRef.namespace}/{.status
 For GitOps, commit the same manifest and sync its application after the CRD and
 enrollment service are ready.
 
-The controller creates Secret `grid-invite-east2` with key `token` and reports
-the reference in `.status.secretRef`. The token never appears in Git or status.
+The controller names the Secret after the invite's `metadata.name`, while the
+site operator reads `grid-invite-<siteName>`. Keep `metadata.name` equal to
+`spec.siteName`, as the example does. The Secret carries key `token`, and the
+controller reports its reference in `.status.secretRef`. The token never appears
+in Git or status.
+
 The chart does not sync these resources. Vault can store the token, but an
 external sync process must copy it and `grid-ca-bundle` to the site's operator
-namespace and delete the delivered token when the invite is pruned. By default,
-the source Secret is in the enrollment release namespace; set
-`enrollment.inviteSecrets.namespace` to use a dedicated namespace. Restrict read
-access to this namespace to the enrollment service and the sync process.
+namespace and delete the delivered token when the invite is pruned. Set
+`enrollment.inviteSecrets.namespace` to a dedicated namespace rather than
+accepting the default. The default is the enrollment release namespace, which
+also holds `grid-ca-key` and the database URL Secret, so read access there lets
+the sync process sign any site identity. Grant the sync process read only in the
+invite namespace, and `get` on `grid-ca-bundle` by name.
 
 The required jurisdiction labels are recorded but not enforced yet.
 
@@ -121,6 +127,12 @@ The spec is immutable. Deleting the resource revokes an unused token and its
 source Secret. GitOps pruning is an intentional revocation. To change an invite,
 delete it and recreate it. Set `allowDeletedName: true` when inviting a site
 name whose prior enrollment was deleted.
+
+The controller mints from the spec, without the authorization the HTTP API
+applies to the same option, where `allowDeletedName` needs `delete` on
+`enrollments`. Hold `create` on `siteinvites`, and merge access to the GitOps
+repository, as closely as `grid-admin`, and as closely as `enrollment-admin`
+wherever `allowDeletedName` is set, since it re-admits a name an admin deleted.
 
 Existing ACM installations can continue using the chart's `invites` values and
 delivery policy. That hook-based flow remains documented in the chart README.
@@ -207,12 +219,15 @@ signer name, or RBAC escalation prevention refuses the record roles.
 ## Availability
 
 The chart defaults to one replica. `enrollment.replicaCount` starts the API and
-SiteInvite controller in every pod. Postgres serializes concurrent token writes,
-and invite Secrets checkpoint reconciliation, but there is no leader election or
-multi-replica qualification. For HA, use shared HA Postgres and the same CA key
-Secret for every replica. Qualify concurrent reconciliation before scaling
-beyond one. The target shape is active-active API pods with a single controller,
-using leader election or a separate deployment.
+SiteInvite controller in every pod. A per-site advisory lock serializes mints
+only. Revocation is a plain delete outside that lock, and an outstanding invite
+re-mints its checkpointed token id on every pass, so with two replicas one pod's
+cleanup can delete the row while another pod's in-flight reconcile inserts it
+back, leaving a live token with no invite and no Secret. There is no leader
+election or multi-replica qualification. For HA, use shared HA Postgres and the
+same CA key Secret for every replica. Qualify concurrent reconciliation before
+scaling beyond one. The target shape is active-active API pods with a single
+controller, using leader election or a separate deployment.
 
 ## 5. Rotation
 
