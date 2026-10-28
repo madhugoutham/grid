@@ -3334,7 +3334,7 @@ dependencies = [
  "percent-encoding",
  "praxis-proxy-tls",
  "quixotic-plecostomus-core",
- "quixotic-plecostomus-http 0.11.0",
+ "quixotic-plecostomus-http",
  "rand 0.10.3",
  "regex",
  "serde",
@@ -3403,7 +3403,7 @@ dependencies = [
  "praxis-proxy-filter",
  "praxis-proxy-tls",
  "quixotic-plecostomus-core",
- "quixotic-plecostomus-http 0.11.0",
+ "quixotic-plecostomus-http",
  "quixotic-plecostomus-proxy",
  "rand 0.10.3",
  "rustls",
@@ -3554,9 +3554,9 @@ dependencies = [
  "once_cell",
  "parking_lot",
  "quixotic-plecostomus-core",
- "quixotic-plecostomus-error 0.11.0",
+ "quixotic-plecostomus-error",
  "quixotic-plecostomus-header-serde",
- "quixotic-plecostomus-http 0.11.0",
+ "quixotic-plecostomus-http",
  "quixotic-plecostomus-lru",
  "quixotic-plecostomus-timeout",
  "rand 0.10.3",
@@ -3598,8 +3598,8 @@ dependencies = [
  "ouroboros",
  "parking_lot",
  "percent-encoding",
- "quixotic-plecostomus-error 0.11.0",
- "quixotic-plecostomus-http 0.11.0",
+ "quixotic-plecostomus-error",
+ "quixotic-plecostomus-http",
  "quixotic-plecostomus-pool",
  "quixotic-plecostomus-runtime",
  "quixotic-plecostomus-rustls",
@@ -3624,12 +3624,6 @@ dependencies = [
 
 [[package]]
 name = "quixotic-plecostomus-error"
-version = "0.11.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8f5194971dca8add6ff0af06c581ecd9a36c16e7d930e997ca507a87fe44714d"
-
-[[package]]
-name = "quixotic-plecostomus-error"
 version = "0.11.1"
 source = "git+https://github.com/praxis-proxy/pingora?rev=4fde8bb89a96c54ee19134d66d91f03e81f67f0a#4fde8bb89a96c54ee19134d66d91f03e81f67f0a"
 
@@ -3641,22 +3635,11 @@ dependencies = [
  "bytes",
  "http",
  "httparse",
- "quixotic-plecostomus-error 0.11.1",
- "quixotic-plecostomus-http 0.11.1",
+ "quixotic-plecostomus-error",
+ "quixotic-plecostomus-http",
  "thread_local",
  "zstd",
  "zstd-safe",
-]
-
-[[package]]
-name = "quixotic-plecostomus-http"
-version = "0.11.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1c5b9b84e31715f3636a3d9795259ad752ba7f2a250a72e9d44b56dbdecb8dce"
-dependencies = [
- "bytes",
- "http",
- "quixotic-plecostomus-error 0.11.0",
 ]
 
 [[package]]
@@ -3666,7 +3649,7 @@ source = "git+https://github.com/praxis-proxy/pingora?rev=4fde8bb89a96c54ee19134
 dependencies = [
  "bytes",
  "http",
- "quixotic-plecostomus-error 0.11.1",
+ "quixotic-plecostomus-error",
 ]
 
 [[package]]
@@ -3718,8 +3701,8 @@ dependencies = [
  "once_cell",
  "quixotic-plecostomus-cache",
  "quixotic-plecostomus-core",
- "quixotic-plecostomus-error 0.11.0",
- "quixotic-plecostomus-http 0.11.0",
+ "quixotic-plecostomus-error",
+ "quixotic-plecostomus-http",
  "rand 0.10.3",
  "regex",
  "tokio",
@@ -3747,7 +3730,7 @@ checksum = "a4d17b81a9336b506f4452dcf4a683a8c37ee03eec1b210a5f7a48f92dc38023"
 dependencies = [
  "log",
  "no_debug",
- "quixotic-plecostomus-error 0.11.0",
+ "quixotic-plecostomus-error",
  "rustls",
  "rustls-native-certs 0.7.3",
  "rustls-pemfile",
