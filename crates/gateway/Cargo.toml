@@ -353,5 +353,12 @@ metrics = { workspace = true }
 [package.metadata.cargo-machete]
 ignored = ["opentelemetry-otlp", "praxis-proxy", "praxis-proxy-core", "praxis-proxy-filter"]
 
+# Use the upstream fix for the vulnerable zstd dependency range in this release.
+# The published header-serde 0.11.1 release still requires zstd 0.13 /
+# zstd-safe 7; this commit widens those requirements to zstd 0.14 /
+# zstd-safe 8. Core already accepts zstd 0.x.
+[patch.crates-io]
+quixotic-plecostomus-header-serde = { git = "https://github.com/praxis-proxy/pingora", rev = "4fde8bb89a96c54ee19134d66d91f03e81f67f0a" }
+
 [lints]
 workspace = true
