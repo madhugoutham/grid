@@ -21,7 +21,7 @@ pub const TTFT_P50_SIGNAL: &str = "grid_provider_ttft_p50_seconds";
 pub const TTFT_P90_SIGNAL: &str = "grid_provider_ttft_p90_seconds";
 /// Mean time per output token, streaming requests only, seconds.
 pub const TPOT_SIGNAL: &str = "grid_provider_tpot_seconds";
-/// Requests the site failed over requests it received, the EPP's own client errors left out of both.
+/// Failed requests over received requests, reported client errors other than 429 left out of both.
 pub const ERROR_RATIO_SIGNAL: &str = "grid_provider_error_ratio";
 
 /// EPP time to first token, labeled `streaming`.
@@ -34,7 +34,7 @@ const INPUT_TOKENS: &str = "llm_d_epp_request_input_tokens";
 const REQUESTS: &str = "llm_d_epp_request_total";
 /// EPP requests that failed, labeled `error_code`.
 const ERRORS: &str = "llm_d_epp_request_error_total";
-/// The error code of a scheduled request the model server answered with an error.
+/// The error code of a scheduled request the model server answered with any non-200, its 4xx included.
 const ANSWERED: &str = "ModelServerError";
 /// Error codes that fault the client, not the site: the 4xx answers other than 429, including the 412 a
 /// conditional decode gets on a cache miss.

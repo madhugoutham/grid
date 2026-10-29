@@ -49,7 +49,7 @@ from, and `grid_provider` the provider within it.
 | `grid_provider_ttft_p50_seconds` | gauge | Median streaming time to first token over the last 30s. |
 | `grid_provider_ttft_p90_seconds` | gauge | 90th percentile streaming time to first token over the last 30s. |
 | `grid_provider_tpot_seconds` | gauge | Mean streaming time per output token over the last 30s. |
-| `grid_provider_error_ratio` | gauge | Requests the site failed over requests it received in the last 30s, the EPP's own client errors left out. |
+| `grid_provider_error_ratio` | gauge | Failed requests over received requests in the last 30s, reported client errors other than 429 left out. |
 
 ## Operator: scraping this site's providers
 

@@ -1098,7 +1098,7 @@ const PROVIDER_SIGNALS: [(&str, &str); 7] = [
     ),
     (
         "grid_provider_error_ratio",
-        "Requests the site failed over requests it received in the last 30s, the EPP's own client errors left out.",
+        "Failed requests over received requests in the last 30s, reported client errors other than 429 left out.",
     ),
 ];
 

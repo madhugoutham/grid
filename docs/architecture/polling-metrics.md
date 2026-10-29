@@ -144,12 +144,8 @@ borrowed from another site.
   from receiving the request, so it includes flow-control wait and network.
 - `grid_provider_tpot_seconds`: mean time per output token, streaming requests.
 - `grid_provider_error_ratio`: requests the site failed over requests it
-  received, from `llm_d_epp_request_total` and `llm_d_epp_request_error_total`,
-  leaving out the client errors the EPP returns itself (4xx other than 429). It
-  needs 20 received requests, not completed ones. The EPP labels any non-200
-  from a model server `ModelServerError`, so a model server's 4xx counts as a
-  failure. When the EPP also counts an eviction after scheduling as an error,
-  that request is received twice and the ratio reads low. The latency histograms
+  received, not counting those it reports as client errors (4xx other than 429).
+  It needs 20 received requests, not completed ones. The latency histograms
   record only successes, so a failing site can read fast; this shows it.
 
 The EPP labels these by model, not pool, so an EPP serving several pools reports
