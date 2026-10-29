@@ -130,6 +130,12 @@ jobs:
           mapfile -t charts < <(find charts -mindepth 2 -maxdepth 2 -name tests -type d -printf '%h\n' | sort)
           helm unittest "${charts[@]}"
 
+      - name: Managed-cluster lifecycle templates
+        run: |
+          python3 -m venv /tmp/grid-policy-tests
+          /tmp/grid-policy-tests/bin/pip install 'PyYAML==6.0.3'
+          /tmp/grid-policy-tests/bin/python charts/grid-enrollment/tests/managed_clusters_test.py
+
       - name: Validate charts (static)
         env:
           RENDER_DIR: ${{ runner.temp }}/helm-rendered
@@ -384,6 +390,9 @@ jobs:
       - name: Run Kind lifecycle tests
         run: |
           KIND=1 GRID_IMAGE_TAG=ci ./scripts/verify-helm-chart.sh
+
+      - name: Verify cert-manager enrollment and CA retention
+        run: bash charts/grid-enrollment/tests/cert-manager-e2e.sh
 
       - name: Upload test logs
         if: always()
